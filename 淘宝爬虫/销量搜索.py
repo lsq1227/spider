@@ -9,10 +9,6 @@ import requests, random
 #输入自己的cookie
 cookie = ''
 
-
-
-
-
 head = {
     "authority":"s.taobao.com",
     "Connection":"close",
