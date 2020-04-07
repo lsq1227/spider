@@ -66,3 +66,43 @@ c.data = 页码以及商品id的参数
 第一次请求还是请求https://h5api.m.taobao.com/h5/mtop.taobao.social.feed.aggregate/1.0/这个接口，什么也不用带直接会返回一个_m_h5_tk，拿到之后开始拼接cookie进行一系列的参数拼接。
 
 拼接完成之后的url参数，最好去比对一下，参数很容易出错。
+
+
+
+
+
+
+
+## 知乎爬虫
+
+知乎的接口是一个经典的伪加密。
+
+在请返回结果里面带有一串加密参数session_token字段
+
+本来以为是一个js加密，反复测试后，他竟然是个伪加密。只要带一个就可以一直访问。目前观察到的周期为一天。所以在请求之前只要请求了知乎官网就可以直接无限请求（知乎是有cookie验证的，每次必须提前登陆才能拿到数据，cookie验证同理tb的cookie验证。）
+
+
+
+## 头条爬虫
+
+先贴一个链接[链接](https://www.toutiao.com/c/user/article/?page_type=1&user_id=102107972930&max_behot_time=0&count=20&as=A185BED8CA9A847&cp=5E8ABA080457EE1&_signature=WVIiDgAgEBDJraClGUiBAFlTYxAAAfZvsjcdJBrm3BQ5Lcwwi8.485qNftHd93ZpKQiE-zfWyXzY-3k1VxciWZv2slFIaf19YHOr6jP2GTAoBlcbAo.-dAZze4KrO3ZIvGI)
+
+1. page_type: 1
+2. user_id: 102107972930
+3. max_behot_time: 0
+4. count: 20
+5. as: A185BED8CA9A847
+6. cp: 5E8ABA080457EE1
+7. _signature: WVIiDgAgEBDJraClGUiBAFlTYxAAAfZvsjcdJBrm3BQ5Lcwwi8.485qNftHd93ZpKQiE-zfWyXzY-3k1VxciWZv2slFIaf19YHOr6jP2GTAoBlcbAo.-dAZze4KrO3ZIvGI
+
+这些是参数 首先确定  变化的是 as ，cp ， _signature。这三个参数。
+
+首先破解as，cp的参数：
+
+找到他对应的js加密文件，尝试使用node环境去调用js。遇到了找不到md5加密的问题。所以使用python去翻译他的js代码。在头条文件夹里面get_sign函数仿写头条的js加密方式。
+
+as，cp参数破解成功！
+
+接下来就是对signture的破解，因为他的js里面带有window对象和local对象。这些都是浏览器自带的对象用nodejs没法模拟这些对象，所以用无头浏览器进行调用js获得他的结果。执行的js代码为window.byted_acrawler.sign(）。在我的头条爬虫里面，有代码。
+
+大概代码思路已经整理出来了，接下来就是解析，他的返回是json格式，非常好解析。
