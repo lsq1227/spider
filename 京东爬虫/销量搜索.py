@@ -10,8 +10,6 @@ user = [
     "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; TencentTraveler 4.0)",
     "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)"
 ]
-
-
 def temp(key):
     url = f'https://dd-search.jd.com/?terminal=pc&newjson=1&ver=2&zip=1&key={key}&pvid=66bb288c12eb407890ad52d689c1371e&t={int(time.time())*100}&curr_url=www.jd.com%2F&callback=jQuery1001034'
     head = {

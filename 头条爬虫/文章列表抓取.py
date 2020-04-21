@@ -46,14 +46,15 @@ class selenium_nign():
     def sclock(self):
         self.driver.close()
 se = selenium_nign(url='https://www.toutiao.com/c/user/102107972930/#mid=1607559076471816')
+
 while True:
     ascp = get_sign()
     print(se.cookie())
     print(se.nign())
     print(ascp['as'])
     print(ascp['cp'])
-    url = f'https://www.toutiao.com/c/user/article/?page_type=1&user_id=102107972930&max_behot_time=0&count=20&as={ascp["as"]}&cp={ascp["cp"]}&_signature={se.nign()}'
 
+    url = f'https://www.toutiao.com/c/user/article/?page_type=1&user_id=102107972930&max_behot_time=0&count=20&as={ascp["as"]}&cp={ascp["cp"]}&_signature={se.nign()}'
     print(url)
 
     head = {
